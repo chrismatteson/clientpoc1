@@ -1,3 +1,5 @@
+---
+# This is the yaml file for the sdc datacenter
 ntp::servers:
   - sdc-ntp1.i2cinc.com
   - sdc-ntp2.i2cinc.com

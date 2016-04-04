@@ -1,3 +1,5 @@
+---
+# This is the yaml file common to all nodes
 dnsclient::nameservers:
   - 8.8.8.8
   - 8.8.4.4
