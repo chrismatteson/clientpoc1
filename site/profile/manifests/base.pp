@@ -2,13 +2,14 @@
 # the PoC requirements of the client.
 #
 # Requirements:
-# - ghoneycutt/dnsclient
 # - puppetlabs/ntp
+# - ghoneycutt/dnsclient
 # - ghoneycutt/ssh
 # - ghoneycutt/pam
+# - kemra102/auditd
+# - ppbrown/svcprop
 # - saz/rsyslog
 # - thias/postfix
-# - kemra102/auditd
 #
 class profile::base (
   $host_hash = hiera_hash(host_hash,''),
@@ -16,7 +17,16 @@ class profile::base (
 
 # Handle DNS
   if $::kernelrelease == '5.11' {
-    #handle dns on solaris 11
+    svcprop { 'Search Domain':
+      fmri     => 'network/dns/client',
+      property => 'config/search = astring',
+      value    => 'i2cinc.com',
+    }
+    svcprop { 'Nameservers':
+      fmri     => 'network/dns/client',
+      property => 'config/nameserver = net_address',
+      value    => '(8.8.8.8 8.8.4.4 208.67.222.222 208.67.220.220',
+    }
   }
   else {  #possibly restrict this to just Linux and Solaris 10 and fail otherwise?
 # This module handles DNS for Linux and Solaris 10
