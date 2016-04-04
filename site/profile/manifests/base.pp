@@ -110,13 +110,21 @@ class profile::base (
 
 # Handle Postfix
   if $::kernel == 'SunOS' {
+    package { ['sendmail','smtp-notify']:
+      ensure => absent,
+    }
     # Need to find package for Solaris
   }
   elsif $::kernel == 'Linux' {
     package { 'sendmail':
       ensure => absent,
     }
-    include postfix::server
+    class { 'postfix::server':
+      mydomain                => 'i2cinc.com',
+      relayhost               => 'mail.i2cinc.com',
+      smtp_sasl_auth          => true,
+      smtp_sasl_password_maps => 'hash:/etc/postfix/relay_passwd',
+    }
   }
   else {
     warning('This profile only supports postfix policies for Linux and Solaris')
