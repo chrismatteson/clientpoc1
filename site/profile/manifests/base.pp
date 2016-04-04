@@ -40,14 +40,29 @@ class profile::base (
       source => 'puppet://modules/profile/solarislogin',
       mode   => '0644'
     }
-    fileline { '/etc/profile':
-      #insert lines
+    file_line { 'TMOUT':
+      ensure => present,
+      path   => '/etc/profile',
+      line   => 'TMOUT=900',
+      match  => '^TMOUT',
     }
-    file { '/etc/default/inetinit':
-      #fix
+    file_line { 'UMASK':
+      ensure => present,
+      path   => '/etc/profile',
+      line   => 'UMASK=022',
+      match  => '^UMASK',
     }
-    file { '/etc/default/keyserv':
-      #fix
+    file_line { 'TCP_STRONG_ISS':
+      ensure => present',
+      path   => '/etc/default/inetinit',
+      line   => 'TCP_STRONG_ISS=2',
+      match  => '^TCP_STRONG_ISS',
+    }
+    file_line { 'ENABLE_NOBODY_KEYS':
+      ensure => present,
+      path   => '/etc/default/keyserv',
+      line   => 'ENABLE_NOBODY_KEYS=NO',
+      match  => '^ENABLE_NOBODY_KEYS',
     }
   }
 # This module handles password policies for Linux
