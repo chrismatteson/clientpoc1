@@ -29,7 +29,7 @@ pam::pam_session_lines:
   - session [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid
   - session required pam_unix.so
   - session optional pam_ldap.so
-ssh::sshd_config_port: '2746'
+#ssh::sshd_config_port: '2746' # Commented out for development
 ssh::sshd_x11_forwarding: 'no'
 ssh::sshd_config_print_motd: 'no'
 ssh::sshd_allow_tcp_forwarding: 'no'
@@ -42,7 +42,7 @@ ssh::sshd_config_strictmodes: 'yes'
 ssh::sshd_config_login_grace_time: '600'
 ssh::sshd_config_password_authentication: 'yes'
 ssh::sshd_pamauthenticationviakbdint: 'yes'
-ssh::sshd_root_login: 'no'
+#ssh::sshd_root_login: 'no' # Commented out for development
 ssh::sshd_config_subsystem_sftp: 'internal-sftp'
 ssh::sshd_ignorerhosts: 'yes'
 ssh::sshd_config_banner: '/etc/issue'

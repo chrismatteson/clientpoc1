@@ -38,7 +38,7 @@ class profile::base (
     }
     file { '/etc/default/login':
       ensure => file,
-      source => 'puppet://modules/profile/solarislogin',
+      source => 'puppet:///modules/profile/solarislogin',
       mode   => '0644'
     }
     file_line { 'TMOUT':
