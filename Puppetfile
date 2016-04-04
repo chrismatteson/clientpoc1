@@ -16,13 +16,13 @@ forge "http://forge.puppetlabs.com"
 #  :git    => 'https://github.com/puppetlabs/puppetlabs-apache',
 #  :branch => 'docs_experiment'
 
-mod 'puppetlabs/apache',
-mod 'puppetlabs/augeas',
-mod 'puppetlabs/concat',
-mod 'puppetlabs/ntp',
-mod 'puppetlabs/stdlib',
-mod 'ghoneycutt/dnsclient',
-mod 'ghoneycutt/pam',
-mod 'ghoneycutt/ssh',
-mod 'saz/rsyslog',
-mod 'thias/postfix',
+mod 'puppetlabs/apache'
+mod 'puppetlabs/augeas'
+mod 'puppetlabs/concat'
+mod 'puppetlabs/ntp'
+mod 'puppetlabs/stdlib'
+mod 'ghoneycutt/dnsclient'
+mod 'ghoneycutt/pam'
+mod 'ghoneycutt/ssh'
+mod 'saz/rsyslog'
+mod 'thias/postfix'
