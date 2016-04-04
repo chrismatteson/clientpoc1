@@ -32,12 +32,12 @@ class profile::base (
   if $::kernel == 'SunOS' {
     file { '/etc/default/passwd':
       ensure => file,
-      source => 'puppet:///modules/clientpoc1/solarispasswd',
+      source => 'puppet:///modules/profile/solarispasswd',
       mode   => '0644',
     }
     file { '/etc/default/login':
       ensure => file,
-      source => 'puppet://modules/clientpoc1/solarislogin',
+      source => 'puppet://modules/profile/solarislogin',
       mode   => '0644'
     }
     fileline { '/etc/profile':
@@ -53,10 +53,13 @@ class profile::base (
 # This module handles password policies for Linux
   elsif $::kernel == 'Linux' {
     include pam
-    notify {'linux': }
+    file { '/etc/login.defs':
+      ensure => file,
+      mode   => '0644',
+      source => 'puppet:///modules/profile/login.defs'
+    }
   }
   else {
-    notify {'else': }
     warning('This module only supports password policies for Linux and Solaris')
   }
 # Handle Syslog
