@@ -1,0 +1,3 @@
+ntp::servers:
+  - wdc-ntp1.i2cinc.com
+  - wdc-ntp2.i2cinc.com

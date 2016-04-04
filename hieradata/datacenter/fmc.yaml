@@ -1,0 +1,3 @@
+ntp::servers:
+  - fmc-ntp1.i2cinc.com
+  - fmc-ntp2.i2cinc.com

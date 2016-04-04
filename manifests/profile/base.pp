@@ -6,6 +6,8 @@
 # - puppetlabs/ntp
 # - ghoneycutt/ssh
 # - ghoneycutt/pam
+# - saz/rsyslog
+# - thias/postfix
 #
 class profile::base (
 ) {
@@ -26,12 +28,30 @@ class profile::base (
   include ssh
 
 # Handle Password Policies
-
-# This module handles password policies for Linux, Solaris 10 and Solaris 11
   if kernel == 'SunOS' {
 
   }
-
+# This module handles password policies for Linux
   elsif kernel == 'Linux' {
     include pam
   }
+# Handle Syslog
+  if kernel == 'SunOS' {
+
+  }
+  elsif kernel == 'Linux' {
+    include rsyslog
+  }
+
+# Handle Postfix
+  if kernel == 'SunOS' {
+
+  }
+  elsif kernel == 'Linux' {
+    include postfix
+  }
+
+# Handle host files
+
+
+}

@@ -1,0 +1,3 @@
+ntp::servers:
+  - sdc-ntp1.i2cinc.com
+  - sdc-ntp2.i2cinc.com
