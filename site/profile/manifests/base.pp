@@ -102,7 +102,13 @@ class profile::base (
     }
   }
   elsif $::kernel == 'Linux' {
-    include rsyslog
+    include rsyslog # This appears to be broken for /etc/sysconfig/rsyslog
+    file { '/etc/rsyslog.d/i2c.conf':
+      ensure => file,
+      mode   => '0644',
+      source => 'puppet:///modules/profile/linuxrsyslog',
+      notify => Service['rsyslog'],
+    }
   }
   else {
     warning('This profile only supports syslog policies for Linux and Solaris')
