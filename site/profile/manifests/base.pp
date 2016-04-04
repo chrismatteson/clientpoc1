@@ -4,7 +4,7 @@
 # Requirements:
 # - puppetlabs/ntp
 # - ghoneycutt/dnsclient
-# - ghoneycutt/ssh
+# - ghoneycutt/ssh - Version 3.31.0 due to a bug for Solaris introduced in 3.33.1
 # - ghoneycutt/pam
 # - kemra102/auditd
 # - ppbrown/svcprop
