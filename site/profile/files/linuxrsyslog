@@ -1,0 +1,30 @@
+###############################################################################
+# Syslog Configurations V2 by Abdul Rehman | Sr. System Administrator ; i2c
+###############################################################################
+*.err;kern.notice;auth.* /dev/console
+*.err;kern.debug;daemon.notice;mail.crit /var/log/messages
+mail.info /var/log/maillog
+*.alert;kern.err;daemon.err operator
+*.alert root
+*.emerg *
+# The authpriv file has restricted access.
+authpriv.* /var/log/secure
+# Log cron stuff
+cron.* /var/log/cron
+# if a non-loghost machine chooses to have authentication messages
+# sent to the loghost machine, un-comment out the following line:
+#auth.notice ifdef(`LOGHOST', /var/log/authlog, @loghost)
+*.notice;kern.debug @wdc-syslog1.i2cinc.com
+*.notice;kern.debug @wdc-syslog2.i2cinc.com
+#
+# non-loghost machines will use the following lines to cause "user"
+# log messages to be logged locally.
+#
+ifdef(`LOGHOST', ,
+user.err /dev/sysmsg
+user.err /var/log/messages
+user.alert `root, operator'
+user.emerg *
+)
+audit.notice /var/log/audit/audit.log
+auth.notice /var/log/authlog
