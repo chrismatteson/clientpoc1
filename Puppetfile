@@ -24,7 +24,7 @@ mod 'ghoneycutt/common'
 mod 'ghoneycutt/dnsclient'
 mod 'ghoneycutt/nsswitch'
 mod 'ghoneycutt/pam'
-mod 'ghoneycutt/ssh'
+mod 'ghoneycutt/ssh', '3.31.0'  # Version 3.33.1 and beyond introduce a bug around AddressFamily parameter for Solaris
 mod 'kemra102/auditd'
 mod 'ppbrown/svcprop'
 mod 'saz/rsyslog'

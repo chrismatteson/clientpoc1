@@ -19,13 +19,13 @@ class profile::base (
   if $::kernelrelease == '5.11' {
     svcprop { 'Search Domain':
       fmri     => 'network/dns/client',
-      property => 'config/search = astring',
+      property => 'config/search',
       value    => 'i2cinc.com',
     }
     svcprop { 'Nameservers':
       fmri     => 'network/dns/client',
-      property => 'config/nameserver = net_address',
-      value    => '(8.8.8.8 8.8.4.4 208.67.222.222 208.67.220.220',
+      property => 'config/nameserver',
+      value    => '8.8.8.8 8.8.4.4 208.67.222.222 208.67.220.220',
     }
   }
   else {  #possibly restrict this to just Linux and Solaris 10 and fail otherwise?
@@ -113,6 +113,9 @@ class profile::base (
     # Need to find package for Solaris
   }
   elsif $::kernel == 'Linux' {
+    package { 'sendmail':
+      ensure => absent,
+    }
     include postfix::server
   }
   else {
