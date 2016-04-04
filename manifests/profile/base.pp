@@ -29,7 +29,25 @@ class profile::base (
 
 # Handle Password Policies
   if kernel == 'SunOS' {
-
+    file { '/etc/default/passwd':
+      ensure => file,
+      source => 'puppet:///modules/clientpoc1/solarispasswd',
+      mode   => '0644',
+    }
+    file { '/etc/default/login':
+      ensure => file,
+      source => 'puppet://modules/clientpoc1/solarislogin',
+      mode   => '0644'
+    }
+    fileline { '/etc/profile':
+      #insert lines
+    }
+    file { '/etc/default/inetinit':
+      #fix
+    }
+    file { '/etc/default/keyserv':
+      #fix
+    }
   }
 # This module handles password policies for Linux
   elsif kernel == 'Linux' {
@@ -37,7 +55,7 @@ class profile::base (
   }
 # Handle Syslog
   if kernel == 'SunOS' {
-
+    # Which file is this supposed to manage?
   }
   elsif kernel == 'Linux' {
     include rsyslog
@@ -45,7 +63,7 @@ class profile::base (
 
 # Handle Postfix
   if kernel == 'SunOS' {
-
+    # Need to find package for Solaris
   }
   elsif kernel == 'Linux' {
     include postfix
