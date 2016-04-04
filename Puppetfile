@@ -15,3 +15,14 @@ forge "http://forge.puppetlabs.com"
 #mod 'apache',
 #  :git    => 'https://github.com/puppetlabs/puppetlabs-apache',
 #  :branch => 'docs_experiment'
+
+mod 'puppetlabs/apache',
+mod 'pupppetlabs/augeas',
+mod 'puppetlabs/concat',
+mod 'puppetlabs/ntp',
+mod 'puppetlabs/stdlib',
+mod 'ghoneycutt/dnsclient',
+mod 'ghoneycutt/pam',
+mod 'ghoneycutt/ssh',
+mod 'saz/rsyslog',
+mod 'thias/postfix',
