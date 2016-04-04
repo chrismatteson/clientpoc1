@@ -17,7 +17,7 @@ forge "http://forge.puppetlabs.com"
 #  :branch => 'docs_experiment'
 
 mod 'puppetlabs/apache',
-mod 'pupppetlabs/augeas',
+mod 'puppetlabs/augeas',
 mod 'puppetlabs/concat',
 mod 'puppetlabs/ntp',
 mod 'puppetlabs/stdlib',
