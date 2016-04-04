@@ -8,6 +8,7 @@
 # - ghoneycutt/pam
 # - saz/rsyslog
 # - thias/postfix
+# - kemra102/auditd
 #
 class profile::base (
   $host_hash = hiera_hash(host_hash,''),
@@ -53,7 +54,7 @@ class profile::base (
       match  => '^UMASK',
     }
     file_line { 'TCP_STRONG_ISS':
-      ensure => present',
+      ensure => present,
       path   => '/etc/default/inetinit',
       line   => 'TCP_STRONG_ISS=2',
       match  => '^TCP_STRONG_ISS',
@@ -75,14 +76,26 @@ class profile::base (
     }
   }
   else {
-    warning('This module only supports password policies for Linux and Solaris')
+    warning('This profile only supports password policies for Linux and Solaris')
   }
 # Handle Syslog
   if $::kernel == 'SunOS' {
-    # Which file is this supposed to manage?
+    file { '/etc/syslog':
+      ensure => 'file',
+      mode   => '0644',
+      source => 'puppet:///modules/profile/solarissyslog',
+      notify => Service['system-log'],
+    }
+    service { 'system-log':
+      ensure => running,
+      enable => true,
+    }
   }
   elsif $::kernel == 'Linux' {
     include rsyslog
+  }
+  else {
+    warning('This profile only supports syslog policies for Linux and Solaris')
   }
 
 # Handle Postfix
@@ -91,6 +104,23 @@ class profile::base (
   }
   elsif $::kernel == 'Linux' {
     include postfix::server
+  }
+  else {
+    warning('This profile only supports postfix policies for Linux and Solaris')
+  }
+
+# Handle Auditing
+  if $::kernel == 'SunOS' {
+    # fix
+  }
+  elsif $::kernel == 'Linux' {
+    class { 'auditd':
+      space_left_action => 'syslog',
+      action_mail_acct  => 'itops.apm@i2cinc.com',
+    }
+  }
+  else {
+    warning('This profile only supports audit policies for Linux and Solaris')
   }
 
 # Handle host files
