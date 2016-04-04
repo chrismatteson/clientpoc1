@@ -1,0 +1,20 @@
+# managed by puppet
+---
+:backends:
+  - eyaml
+  - yaml
+
+:logger: console
+
+:hierarchy:
+  - nodes/%{clientcert}
+  - datacenter/%{datacenter}
+  - common
+
+:yaml:
+  :datadir: /etc/puppetlabs/code/environments/%{environment}/hieradata
+
+:eyaml:
+  :datadir: /etc/puppetlabs/code/environments/%{environment}/hieradata
+  :pkcs7_private_key: /etc/puppetlabs/puppet/keys/private_key.pkcs7.pem
+  :pkcs7_public_key:  /etc/puppetlabs/puppet/keys/public_key.pkcs7.pem

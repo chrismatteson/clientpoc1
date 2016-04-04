@@ -10,7 +10,7 @@
 # - thias/postfix
 #
 class profile::base (
-  $host_hash = hiera_hash(host_hash),
+  $host_hash = hiera_hash(host_hash,''),
 ) {
 
 # Handle DNS
@@ -29,7 +29,7 @@ class profile::base (
   include ssh
 
 # Handle Password Policies
-  if kernel == 'SunOS' {
+  if $::kernel == 'SunOS' {
     file { '/etc/default/passwd':
       ensure => file,
       source => 'puppet:///modules/clientpoc1/solarispasswd',
@@ -51,23 +51,28 @@ class profile::base (
     }
   }
 # This module handles password policies for Linux
-  elsif kernel == 'Linux' {
+  elsif $::kernel == 'Linux' {
     include pam
+    notify {'linux': }
+  }
+  else {
+    notify {'else': }
+    warning('This module only supports password policies for Linux and Solaris')
   }
 # Handle Syslog
-  if kernel == 'SunOS' {
+  if $::kernel == 'SunOS' {
     # Which file is this supposed to manage?
   }
-  elsif kernel == 'Linux' {
+  elsif $::kernel == 'Linux' {
     include rsyslog
   }
 
 # Handle Postfix
-  if kernel == 'SunOS' {
+  if $::kernel == 'SunOS' {
     # Need to find package for Solaris
   }
-  elsif kernel == 'Linux' {
-    include postfix
+  elsif $::kernel == 'Linux' {
+    include postfix::server
   }
 
 # Handle host files
@@ -76,6 +81,7 @@ class profile::base (
 # ---
 # hiera_hash:
 #   - example1.host.com: 1.2.3.4
-  create_resources(host, $host_hash)
-
+  unless $host_hash == '' {
+    create_resources(host, $host_hash)
+  }
 }
