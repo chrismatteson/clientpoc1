@@ -13,7 +13,7 @@
 # - thias/postfix
 #
 class profile::base (
-  $host_hash = hiera_hash(host_hash,''),
+  Hash $host_hash = hiera_hash(host_hash,{}),
 ) {
 
 # Handle DNS
@@ -208,11 +208,14 @@ class profile::base (
 # This creates host entries for hosts listed in hiera yaml files
 # in the following format:
 # ---
-# hiera_hash:
-#   example1.host.com: 1.2.3.4
-#   example2.host.com: 5.6.7.8
+# host_hash:
+#   example1.host.com:
+#     ip: 1.2.3.4
+#   example2.host.com:
+#     ip:5.6.7.8
+#     comment: foo
 #
-  unless $host_hash == '' {
+  unless $host_hash == undef {
     create_resources(host, $host_hash)
   }
 }
