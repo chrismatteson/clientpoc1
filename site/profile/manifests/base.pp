@@ -166,7 +166,33 @@ class profile::base (
 
 # Handle Auditing
   if $::kernel == 'SunOS' {
-    # fix
+    if $::kernelrelease == '5.11' {
+# This handles all the required pieces except the line "usermod -K audit_flags=pf:no jdoe"
+      exec { '/usr/sbin/auditconfig -setnaflags lo':
+        unless => '/usr/bin/test "`/usr/sbin/auditconfig -getnaflags | md5sum`" = "11303f9f6e5f946f4f077cae09a9a1a3  -"',
+        notify => Service['auditd'],
+      }
+      exec { '/usr/sbin/auditconfig -setflags lo,ss':
+        unless => '/usr/bin/test "`/usr/sbin/auditconfig -getflags | md5sum`" = "ba7b8ed30d6621afd2544f7d540d3daf  -"',
+        notify => Service['auditd'],
+      }
+      exec { '/usr/sbin/auditconfig -setplugin audit_syslog active p_flags=lo,ex,-fr,fw,fm,+fc,+fd':
+        unless => '/usr/bin/test "`/usr/sbin/auditconfig -getplugin audit_syslog | md5sum`" = "87439b2505340f4a02c3e45ec6ac476c  -"',
+        notify => Service['auditd'],
+      }
+      file { '/var/adm/auditlog':
+        ensure => file,
+        mode   => '0644',
+        notify => Service['auditd'],
+      }
+      service { 'auditd':
+        ensure => running,
+        enable => true,
+      }
+    }
+  }
+  elsif $::kernelrelease == '5.10' {
+# Will need to find a Solaris 10 image to build this
   }
   elsif $::kernel == 'Linux' {
     class { 'auditd':
