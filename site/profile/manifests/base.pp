@@ -9,6 +9,7 @@
 # - kemra102/auditd
 # - ppbrown/svcprop
 # - saz/rsyslog
+# - seteam/opencsw
 # - thias/postfix
 #
 class profile::base (
@@ -119,7 +120,34 @@ class profile::base (
     package { ['sendmail','smtp-notify']:
       ensure => absent,
     }
-    # Need to find package for Solaris
+# This sets up the opencsw postfix, which has packages in /etc/opt and /opt
+# directories instead of the traditional locations.  May not be acceptable
+# for this use case.  Additionally this method of configuring the settings
+# is limited at best, and currently breaking on multiple matches.
+    include opencsw
+    package {'postfix':
+      ensure   => present,
+      provider => 'pkgutil',
+      require  => Class['opencsw'],
+    }
+    file_line { 'Postfix Domain':
+      ensure => present,
+      path   => '/etc/opt/csw/postfix/main.cf',
+      line   => 'mydomain = i2cinc.com',
+      match  => '^?mydomain ='
+    }
+    file_line { 'Postfix Hostname':
+      ensure => present,
+      path   => '/etc/opt/csw/postfix/main.cf',
+      line   => "myhostname = $::hostname",
+      match  => '^?myhostname ='
+    }
+    file_line { 'Relay Host':
+      ensure => present,
+      path   => '/etc/opt/csw/postfix/main.cf',
+      line   => 'relayhost = mail.i2cinc.com',
+      match  => '^?relayhost ='
+    }
   }
   elsif $::kernel == 'Linux' {
     package { 'sendmail':
