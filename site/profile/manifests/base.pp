@@ -209,7 +209,9 @@ class profile::base (
 # in the following format:
 # ---
 # hiera_hash:
-#   - example1.host.com: 1.2.3.4
+#   example1.host.com: 1.2.3.4
+#   example2.host.com: 5.6.7.8
+#
   unless $host_hash == '' {
     create_resources(host, $host_hash)
   }
