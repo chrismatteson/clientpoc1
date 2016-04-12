@@ -1,0 +1,10 @@
+# cat /etc/security/audit_control
+#
+# This file is managed by Puppet
+#
+
+dir:/var/audit
+flags:lo,ex,-fr,fw,fm,+fc,+fd
+naflags:lo
+minfree:20
+plugin: name=audit_syslog.so.1; p_flags=lo,ex,-fr,fw,fm,+fc,+fd

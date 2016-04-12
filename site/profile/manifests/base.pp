@@ -34,8 +34,10 @@ class profile::base (
     include dnsclient
   }
 
-# This module handles NTP for Linux, Solaris 10 and Solaris 11
-  include ntp
+# This module handles NTP for Linux and Solaris 11.  It no longer supports Solaris 10
+  unless $::kernelrelease == '5.10' {
+    include ntp
+  }
 
 # This module handles SSH hardening for Linux, Solaris 10 and Solaris 11
   include ssh
@@ -124,7 +126,7 @@ class profile::base (
 # directories instead of the traditional locations.  May not be acceptable
 # for this use case.  Additionally this method of configuring the settings
 # is limited at best, and currently breaking on multiple matches.
-    include opencsw
+    contain opencsw
     package {'postfix':
       ensure   => present,
       provider => 'pkgutil',
@@ -140,13 +142,13 @@ class profile::base (
       ensure => present,
       path   => '/etc/opt/csw/postfix/main.cf',
       line   => "myhostname = $::hostname",
-      match  => '^?myhostname ='
+      match  => '^myhostname ='
     }
     file_line { 'Relay Host':
       ensure => present,
       path   => '/etc/opt/csw/postfix/main.cf',
       line   => 'relayhost = mail.i2cinc.com',
-      match  => '^?relayhost ='
+      match  => '^relayhost ='
     }
   }
   elsif $::kernel == 'Linux' {
@@ -190,9 +192,17 @@ class profile::base (
         enable => true,
       }
     }
-  }
-  elsif $::kernelrelease == '5.10' {
-# Will need to find a Solaris 10 image to build this
+    elsif $::kernelrelease == '5.10' {
+      file { '/etc/security/audit_control':
+        ensure => file,
+        mode   => '0644',
+        source => 'puppet:///modules/profile/solaris10_audit_control',
+      }
+      exec { '/usr/bin/bash /etc/security/bsmconv; /usr/bin/touch /tmp/bsmconvrun':
+        creates => '/tmp/bsmconvrun',
+        require => File['/etc/security/audit_control'],
+      }
+    }
   }
   elsif $::kernel == 'Linux' {
     class { 'auditd':
