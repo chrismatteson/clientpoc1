@@ -198,10 +198,12 @@ class profile::base (
         mode   => '0644',
         source => 'puppet:///modules/profile/solaris10_audit_control',
       }
-      exec { '/usr/bin/bash /etc/security/bsmconv; /usr/bin/touch /tmp/bsmconvrun':
-        creates => '/tmp/bsmconvrun',
-        require => File['/etc/security/audit_control'],
-      }
+# This is broken because bsmconv wants you to hit 'y'.  Will need to pull script
+# modify it to not need input and drop it back in a temp location.
+#      exec { '/usr/bin/bash /etc/security/bsmconv; /usr/bin/touch /tmp/bsmconvrun':
+#        creates => '/tmp/bsmconvrun',
+#        require => File['/etc/security/audit_control'],
+#      }
     }
   }
   elsif $::kernel == 'Linux' {
