@@ -34,7 +34,8 @@ class profile::base (
     include dnsclient
   }
 
-# This module handles NTP for Linux and Solaris 11.  It no longer supports Solaris 10
+# This module handles NTP for Linux and Solaris 11.  It does not support Solaris 10
+# however the ghoneycutt/ntp module does and should be a drop in replacement
   unless $::kernelrelease == '5.10' {
     include ntp
   }
@@ -156,6 +157,7 @@ class profile::base (
       ensure => absent,
     }
     class { 'postfix::server':
+      inet_interfaces         => 'all',
       mydomain                => 'i2cinc.com',
       relayhost               => 'mail.i2cinc.com',
       smtp_sasl_auth          => true,
